@@ -25,10 +25,10 @@ if (!function_exists('build_select')) {
      * @param mixed  $attr
      * @return string
      */
-    function build_select($name, $options, $selected = [], $attr = [])
+    function build_select($name, $options, $selected = null, $attr = [])
     {
         $options = is_array($options) ? $options : explode(',', $options);
-        $selected = is_array($selected) ? $selected : explode(',', $selected);
+        $selected = is_array($selected) ? $selected : explode(',', strval($selected));
         return Form::select($name, $options, $selected, $attr);
     }
 }
@@ -42,13 +42,13 @@ if (!function_exists('build_radios')) {
      * @param mixed  $selected
      * @return string
      */
-    function build_radios($name, $list = [], $selected = null)
+    function build_radios($name, $list = [], $selected = null, $options = [])
     {
         $html = [];
         $selected = is_null($selected) ? key($list) : $selected;
         $selected = is_array($selected) ? $selected : explode(',', $selected);
         foreach ($list as $k => $v) {
-            $html[] = sprintf(Form::radio($name, $k, in_array($k, $selected), ['id' => "{$name}-{$k}"]));
+            $html[] = sprintf(Form::radio($name, $k, in_array($k, $selected), ['id' => "{$name}-{$k}", 'title' => "{$v}"] + $options));
         }
         return implode(' ', $html);
     }
@@ -63,13 +63,13 @@ if (!function_exists('build_checkboxs')) {
      * @param mixed  $selected
      * @return string
      */
-    function build_checkboxs($name, $list = [], $selected = null)
+    function build_checkboxs($name, $list = [], $selected = null, $options = [])
     {
         $html = [];
         $selected = is_null($selected) ? [] : $selected;
         $selected = is_array($selected) ? $selected : explode(',', $selected);
         foreach ($list as $k => $v) {
-            $html[] = sprintf(Form::checkbox($name, $k, in_array($k, $selected), ['id' => "{$name}-{$k}"]));
+            $html[] = sprintf(Form::checkbox($name, $k, in_array($k, $selected), ['id' => "{$name}-{$k}", 'title' => "{$v}"] + $options));
         }
         return implode(' ', $html);
     }
