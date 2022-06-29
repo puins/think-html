@@ -222,7 +222,6 @@ class FormBuilder
         $merge = compact('type', 'value', 'id');
 
         $options = array_merge($options, $merge);
-        dump($options);
 
         return $this->toHtmlString('<input' . $this->html->attributes($options) . '>');
     }
@@ -698,8 +697,6 @@ class FormBuilder
     public function option($display, $value, $selected, array $attributes = [])
     {
         $selected = $this->getSelectedValue($value, $selected);
-
-        // dump($selected);
 
         $options = array_merge(['value' => $value, 'selected' => $selected], $attributes);
 
