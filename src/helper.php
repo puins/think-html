@@ -19,17 +19,18 @@ if (!function_exists('build_select')) {
 
     /**
      * 生成下拉列表
-     * @param string $name
-     * @param mixed  $options
-     * @param mixed  $selected
-     * @param mixed  $attr
+     * @param  string $name
+     * @param  array  $list
+     * @param  string|bool $selected
+     * @param  array  $selectAttributes
+     * @param  array  $optionsAttributes
+     * @param  array  $optgroupsAttributes
      * @return string
      */
-    function build_select($name, $options, $selected = null, $attr = [])
+    function build_select($name, $list = [], $selected = null, array $selectAttributes = [], array $optionsAttributes = [], array $optgroupsAttributes = [])
     {
-        $options = is_array($options) ? $options : explode(',', $options);
         $selected = is_array($selected) ? $selected : explode(',', strval($selected));
-        return Form::select($name, $options, $selected, $attr);
+        return Form::select($name, $list, $selected, $selectAttributes, $optionsAttributes, $optgroupsAttributes);
     }
 }
 
@@ -46,7 +47,7 @@ if (!function_exists('build_radios')) {
     {
         $html = [];
         $selected = is_null($selected) ? key($list) : $selected;
-        $selected = is_array($selected) ? $selected : explode(',', $selected);
+        $selected = is_array($selected) ? $selected : explode(',', strval($selected));
         foreach ($list as $k => $v) {
             $html[] = sprintf(Form::radio($name, $k, in_array($k, $selected), ['id' => "{$name}-{$k}", 'title' => "{$v}"] + $options));
         }
@@ -67,7 +68,7 @@ if (!function_exists('build_checkboxs')) {
     {
         $html = [];
         $selected = is_null($selected) ? [] : $selected;
-        $selected = is_array($selected) ? $selected : explode(',', $selected);
+        $selected = is_array($selected) ? $selected : explode(',', strval($selected));
         foreach ($list as $k => $v) {
             $html[] = sprintf(Form::checkbox($name, $k, in_array($k, $selected), ['id' => "{$name}-{$k}", 'title' => "{$v}"] + $options));
         }
